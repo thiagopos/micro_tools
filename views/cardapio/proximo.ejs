@@ -1,0 +1,159 @@
+<%- include('partials/layout.ejs') %>
+<div class="login-container">
+  <h1>Cardápio Semanal</h1>
+  <h3>
+    Almoço de <%= moment(weekDates[0]).format('DD') %> a <%= moment(weekDates[6]).format('DD [de] MMMM [de] YYYY') %>
+  </h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Dia</th>
+        <th>Prato Principal</th>
+        <th>Opção</th>
+        <th>Guarnição</th>
+        <th>Salada</th>
+        <th>Suco</th>
+        <th>Sobremesa</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% weekDates.slice(0, 7).forEach((date) => { %>
+      <tr>
+        <td><%= moment(date).format('DD/MM/YYYY') %></td>
+        <% let entry = cardapio.find(c => c.dia === date && c.refeicao === 'Almoço'); %>
+        <form action="/cardapio/proximo" method="POST">
+          <input type="hidden" name="dia" value="<%= date %>" />
+          <input type="hidden" name="refeicao" value="Almoço" />
+          <td>
+            <input
+              type="text"
+              name="prato_principal"
+              value="<%= entry ? entry.prato_principal : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="opcao"
+              value="<%= entry ? entry.opcao : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="guarnicao"
+              value="<%= entry ? entry.guarnicao : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="salada"
+              value="<%= entry ? entry.salada : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input id="preenchivel" type="text" name="suco" value="<%= entry ? entry.suco : '' %>" autocomplete="off" />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="sobremesa"
+              value="<%= entry ? entry.sobremesa : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td><button type="submit">Gravar</button></td>
+        </form>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h3>
+    Jantar de <%= moment(weekDates[0]).format('DD') %> a <%= moment(weekDates[6]).format('DD [de] MMMM [de] YYYY') %>
+  </h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Dia</th>
+        <th>Prato Principal</th>
+        <th>Opção</th>
+        <th>Guarnição</th>
+        <th>Salada</th>
+        <th>Suco</th>
+        <th>Sobremesa</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% weekDates.slice(0, 7).forEach((date) => { %>
+      <tr>
+        <td><%= moment(date).format('DD/MM/YYYY') %></td>
+        <% let entry = cardapio.find(c => c.dia === date && c.refeicao === 'Janta'); %>
+        <form action="/cardapio/proximo" method="POST">
+          <input type="hidden" name="dia" value="<%= date %>" />
+          <input type="hidden" name="refeicao" value="Janta" />
+          <td>
+            <input
+              type="text"
+              name="prato_principal"
+              value="<%= entry ? entry.prato_principal : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="opcao"
+              value="<%= entry ? entry.opcao : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="guarnicao"
+              value="<%= entry ? entry.guarnicao : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="salada"
+              value="<%= entry ? entry.salada : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td>
+            <input id="preenchivel" type="text" name="suco" value="<%= entry ? entry.suco : '' %>" autocomplete="off" />
+          </td>
+          <td>
+            <input
+              id="preenchivel"
+              type="text"
+              name="sobremesa"
+              value="<%= entry ? entry.sobremesa : '' %>"
+              autocomplete="off"
+            />
+          </td>
+          <td><button type="submit">Gravar</button></td>
+        </form>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.login-container {
+  width: 90%;
+  max-width: 1500px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+table, th, td {
+  border: 1px solid #bbb; /* Reduzido para uma borda mais fina */
+}
+
+th, td {
+  padding: 3px 4px; /* Ajustei o padding para mais espaçamento */
+  text-align: left;
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input[type="text"] {
+  /* width: calc(100% - 16px); /* Aumentei para caber melhor no td */ 
+  padding: 5px; /* Menos espaço para o conteúdo */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.75rem; /* Reduzi o tamanho da fonte */
+}
+
+td input[type="text"] {
+  width: 100%; /* Corrigi a largura para caber no espaço da célula */
+  font-size: 0.75rem; /* Reduzi o tamanho da fonte */
+}
+
+button {
+  padding: 6px 10px; /* Ajustei para menos espaço */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para o título */
+#titulo-cardapio {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
+}
+
+/* Container dos botões */
+#botoes-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Estilo comum para os botões */
+#botoes-container a {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+/* Botão Editar Atual */
+#btn-editar-atual {
+  background-color: #3498db; /* Cor azul */
+}
+
+#btn-editar-atual:hover {
+  background-color: #2980b9; /* Cor azul mais escura no hover */
+}
+
+/* Botão Preencher Próxima Semana */
+#btn-preencher-proxima {
+  background-color: #2ecc71; /* Cor verde */
+}
+
+#btn-preencher-proxima:hover {
+  background-color: #27ae60; /* Cor verde mais escura no hover */
+}
+
+/* Estilo do header */
+header {
+  width: 100%;
+  background-color: #333;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav {  
+  display: flex;
+  align-items: center;  
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.nav-links {  
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  margin-left: 40px;
+  display: inline-block;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #f1c40f;
+}
+
+/* Estilo do botão de sair */
+#logout-btn {
+  padding: 8px 16px;
+  font-size: 1rem;
+  color: white;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+  background-color: #c0392b;
+}
