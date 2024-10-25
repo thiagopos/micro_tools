@@ -9,7 +9,7 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form id="loginForm">
+        <form id="loginForm" action="/login" method="POST">
             <label for="options">Selecione uma opção:</label>
             <select id="options" name="options">
                 <option value="dti_blog">DTI Blog</option>
@@ -19,12 +19,10 @@
             </select>
 
             <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" maxlength="30" required>
 
             <button type="submit">Entrar</button>
         </form>
-    </div>
-
-    <script src="/script.js"></script>
+    </div>    
 </body>
 </html>

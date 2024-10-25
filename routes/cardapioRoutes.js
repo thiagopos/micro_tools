@@ -66,10 +66,6 @@ async function salvarCardapio(db, req) {
 }
 
 // Rotas
-router.get("/", async (req, res) => {
-  res.render("cardapio/cardapio");
-});
-
 router.get("/atual", async (req, res) => {
   const weekDates = getWeekDates().slice(0, 7);
   const cardapio = await req.db.all(`SELECT * FROM cardapio WHERE dia IN (${weekDates.map(() => "?").join(",")})`, weekDates);
@@ -82,9 +78,9 @@ router.get("/proximo", async (req, res) => {
   res.render("cardapio/proximo", { cardapio, weekDates, moment });
 });
 
+// Other routes...
 router.post("/", async (req, res) => {
-  await salvarCardapio(req.db, req);
-  res.redirect("/cardapio");
+  res.redirect("/cardapio/proximo");
 });
 
 router.post("/atual", async (req, res) => {

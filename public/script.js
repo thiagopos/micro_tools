@@ -1,7 +1,4 @@
 const inputs = document.querySelectorAll('#preenchivel');
-
-console.log(inputs.length);
-
 inputs.forEach((input) => {
   input.addEventListener('input', function() {
     // Remove caracteres que não sejam números
