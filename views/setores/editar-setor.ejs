@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Sector</title>
+</head>
+<body>
+  <h1>Edit Sector - <%= setor.nome %></h1>
+  <form action="/protocolos/setores/editar/<%= setor.id %>" method="POST">
+    <label for="nome">Sector Name:</label>
+    <input type="text" id="nome" name="nome" value="<%= setor.nome %>" required />
+
+    <label for="setor_pai_id">Parent Sector:</label>
+    <select id="setor_pai_id" name="setor_pai_id">
+      <option value="">No Parent Sector</option>
+      <% setores.forEach(setorPai => { %>
+        <option value="<%= setorPai.id %>" <%= setorPai.id === setor.setor_pai_id ? 'selected' : '' %>><%= setorPai.nome %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Update Sector</button>
+  </form>
+</body>
+</html>

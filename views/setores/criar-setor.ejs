@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Criar novo setor</title>
+</head>
+<body>
+  <h1>Criar setor</h1>
+  <form action="/protocolos/setores/criar" method="POST">
+    <label for="nome">Nome do setor:</label>
+    <input type="text" id="nome" name="nome" required />
+
+    <label for="setor_pai_id">Pertence ao setor:</label>
+    <select id="setor_pai_id" name="setor_pai_id">
+      <option value="">Não pertence a outro setor</option>
+      <% setores.forEach(setor => { %>
+        <option value="<%= setor.id %>"><%= setor.nome %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Criar setor</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Protocols List</title>
+</head>
+<body>
+  <h1>Protocols List</h1>
+  <a href="/protocolos/criar">Create New Protocol</a>
+  <ul>
+    <% protocolos.forEach(protocolo => { %>
+      <li>
+        <strong><%= protocolo.nome_exibicao %></strong> 
+        (Code: <%= protocolo.codigo_identificacao %>) - 
+        Responsible Sector: <%= protocolo.setor_responsavel %>
+        <a href="/protocolos/<%= protocolo.id %>">View</a> |
+        <a href="/protocolos/editar/<%= protocolo.id %>">Edit</a> |
+        <form action="/protocolos/excluir/<%= protocolo.id %>" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

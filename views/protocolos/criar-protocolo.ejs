@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Protocol</title>
+</head>
+<body>
+  <h1>Create Protocol</h1>
+  <!-- Formulário com enctype correto para upload de arquivos -->
+  <form action="/protocolos/criar" method="POST" enctype="multipart/form-data">
+    <!-- Campo para nome de exibição do protocolo -->
+    <label for="nome_exibicao">Display Name:</label>
+    <input type="text" id="nome_exibicao" name="nome_exibicao" required />
+
+    <!-- Campo para código de identificação -->
+    <label for="codigo_identificacao">Identification Code:</label>
+    <input type="text" id="codigo_identificacao" name="codigo_identificacao" required />
+
+    <!-- Campo para seleção do setor responsável -->
+    <label for="setor_responsavel_id">Responsible Sector:</label>
+    <select id="setor_responsavel_id" name="setor_responsavel_id" required>
+      <option value="">Select a sector</option>
+      <!-- Lista de setores dinâmicos para o dropdown -->
+      <% setores.forEach(setor => { %>
+        <option value="<%= setor.id %>"><%= setor.nome %></option>
+      <% }) %>
+    </select>
+
+    <!-- Campo de upload do arquivo com restrição para PDF -->
+    <label for="arquivo">Protocol Document (PDF):</label>
+    <input type="file" id="arquivo" name="arquivo" accept="application/pdf" required />
+
+    <!-- Botão de envio -->
+    <button type="submit">Create Protocol</button>
+  </form>
+</body>
+</html>

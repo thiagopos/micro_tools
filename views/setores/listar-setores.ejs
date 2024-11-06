@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sectors List</title>
+</head>
+<body>
+  <h1>Sectors List</h1>
+  <a href="/protocolos/setores/criar">Create New Sector</a>
+  <ul>
+    <% setores.forEach(setor => { %>
+      <li>
+        <strong><%= setor.nome %></strong>
+        <% if (setor.setor_pai_nome) { %>
+          (Parent: <%= setor.setor_pai_nome %>)
+        <% } %>
+        <a href="/protocolos/setores/editar/<%= setor.id %>">Edit</a> |
+        <form action="/protocolos/setores/excluir/<%= setor.id %>" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

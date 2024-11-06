@@ -9,10 +9,15 @@ import cardapioRoutes from "./routes/cardapioRoutes.js";
 import zeladoriaRoutes from "./routes/zeladoriaRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
 import apiRoutes from "./routes/apiRoutes.js";
+import protocoloRoutes from "./routes/protocoloRoutes.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Configurar ambiente
 dotenv.config();
 moment.locale("pt-br");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +27,9 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Configuração do diretório estático para os arquivos de upload
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Configuração da sessão com armazenamento em memória
 app.use(
@@ -53,6 +61,8 @@ let db;
 
   await criarTabelaCardapio(db);
   await createBlogTable(db);
+  await createSetoresTable(db);
+  await createProtocolosTable(db);
 
   app.use((req, res, next) => {
     req.db = db; // Disponibiliza o banco de dados em todas as rotas
@@ -66,7 +76,10 @@ let db;
   app.use("/zeladoria", isAuthenticated, zeladoriaRoutes);
 
   // Proteger todas as rotas de blog com middleware de autenticação
-  app.use("/blog", isAuthenticated,blogRouter);
+  app.use("/blog", isAuthenticated, blogRouter);
+
+  // Proteger todas as rotas de protocolos com middleware de autenticação
+  app.use("/protocolos", protocoloRoutes);
   
   // Expor a API sem autenticação
   app.use("/api", apiRoutes); // Isso vai permitir acessar a rota de API sem passar pelo middleware
@@ -124,5 +137,45 @@ async function createBlogTable(db) {
     console.log("Tabela 'blog' criada com sucesso.");
   } catch (err) {
     console.error("Erro ao criar a tabela 'blog':", err);
+  }
+}
+
+async function createSetoresTable(db) {
+  const query = `
+    CREATE TABLE IF NOT EXISTS setores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      setor_pai_id INTEGER,
+      FOREIGN KEY (setor_pai_id) REFERENCES setores(id)
+    )
+  `;
+
+  try {
+    await db.run(query);
+    console.log("Tabela 'setores' criada com sucesso.");
+  } catch (err) {
+    console.error("Erro ao criar a tabela 'setores':", err);
+  }
+}
+
+async function createProtocolosTable(db) {
+  const query = `
+    CREATE TABLE IF NOT EXISTS protocolos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome_exibicao TEXT NOT NULL,
+      codigo_identificacao TEXT NOT NULL,
+      arquivo TEXT NOT NULL,
+      setor_responsavel_id INTEGER NOT NULL,
+      nome_salvo TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (setor_responsavel_id) REFERENCES setores(id)
+    )
+  `;
+
+  try {
+    await db.run(query);
+    console.log("Tabela 'protocolos' criada com sucesso.");
+  } catch (err) {
+    console.error("Erro ao criar a tabela 'protocolos':", err);
   }
 }

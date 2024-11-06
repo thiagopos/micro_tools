@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Protocol</title>
+</head>
+<body>
+  <h1>Edit Protocol - <%= protocolo.nome_exibicao %></h1>
+  <form action="/protocolos/editar/<%= protocolo.id %>" method="POST">
+    <label for="nome_exibicao">Display Name:</label>
+    <input type="text" id="nome_exibicao" name="nome_exibicao" value="<%= protocolo.nome_exibicao %>" required />
+
+    <label for="codigo_identificacao">Identification Code:</label>
+    <input type="text" id="codigo_identificacao" name="codigo_identificacao" value="<%= protocolo.codigo_identificacao %>" required />
+
+    <label for="setor_responsavel_id">Responsible Sector:</label>
+    <select id="setor_responsavel_id" name="setor_responsavel_id">
+      <option value="">Select a sector</option>
+      <% setores.forEach(setor => { %>
+        <option value="<%= setor.id %>" <%= setor.id === protocolo.setor_responsavel_id ? 'selected' : '' %>><%= setor.nome %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">Update Protocol</button>
+  </form>
+</body>
+</html>
