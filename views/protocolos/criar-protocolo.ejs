@@ -2,36 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Protocol</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Create Protocol</h1>
-  <!-- Formulário com enctype correto para upload de arquivos -->
-  <form action="/protocolos/criar" method="POST" enctype="multipart/form-data">
-    <!-- Campo para nome de exibição do protocolo -->
-    <label for="nome_exibicao">Display Name:</label>
-    <input type="text" id="nome_exibicao" name="nome_exibicao" required />
+<body class="bg-light">
 
-    <!-- Campo para código de identificação -->
-    <label for="codigo_identificacao">Identification Code:</label>
-    <input type="text" id="codigo_identificacao" name="codigo_identificacao" required />
+  <!-- Header with Navbar -->
+  <header class="bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">App Name</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Menu 1</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Menu 2</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Menu 3</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <button class="btn btn-outline-light" type="button">Logoff</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-    <!-- Campo para seleção do setor responsável -->
-    <label for="setor_responsavel_id">Responsible Sector:</label>
-    <select id="setor_responsavel_id" name="setor_responsavel_id" required>
-      <option value="">Select a sector</option>
-      <!-- Lista de setores dinâmicos para o dropdown -->
-      <% setores.forEach(setor => { %>
-        <option value="<%= setor.id %>"><%= setor.nome %></option>
-      <% }) %>
-    </select>
+  <!-- Main Content -->
+  <div class="container mt-5">
+    <h1 class="mb-4">Create Protocol</h1>
+    <form action="/protocolos/criar" method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+      <div class="mb-3">
+        <label for="nome_exibicao" class="form-label">Display Name:</label>
+        <input type="text" id="nome_exibicao" name="nome_exibicao" class="form-control" required />
+      </div>
 
-    <!-- Campo de upload do arquivo com restrição para PDF -->
-    <label for="arquivo">Protocol Document (PDF):</label>
-    <input type="file" id="arquivo" name="arquivo" accept="application/pdf" required />
+      <div class="mb-3">
+        <label for="codigo_identificacao" class="form-label">Identification Code:</label>
+        <input type="text" id="codigo_identificacao" name="codigo_identificacao" class="form-control" required />
+      </div>
 
-    <!-- Botão de envio -->
-    <button type="submit">Create Protocol</button>
-  </form>
+      <div class="mb-3">
+        <label for="setor_pai_id" class="form-label">Parent Sector:</label>
+        <select id="setor_pai_id" name="setor_pai_id" class="form-select" required>
+          <option value="">Select a parent sector</option>
+          <% setores.forEach(setor => { %>
+            <option value="<%= setor.id %>"><%= setor.nome %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="setor_responsavel_id" class="form-label">Child Sector (Optional):</label>
+        <select id="setor_responsavel_id" name="setor_responsavel_id" class="form-select">
+          <option value="">Select a child sector</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="arquivo" class="form-label">Protocol Document (PDF):</label>
+        <input type="file" id="arquivo" name="arquivo" class="form-control" accept="application/pdf" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Protocol</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap 5 JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('setor_pai_id').addEventListener('change', async function () {
+      const setorPaiId = this.value;
+      const childSectorSelect = document.getElementById('setor_responsavel_id');
+      
+      childSectorSelect.innerHTML = '<option value="">Select a child sector</option>';
+
+      if (setorPaiId) {
+        const response = await fetch(`/protocolos/setores/filhos/${setorPaiId}`);
+        const setoresFilhos = await response.json();
+
+        setoresFilhos.forEach(setor => {
+          const option = document.createElement('option');
+          option.value = setor.id;
+          option.textContent = setor.nome;
+          childSectorSelect.appendChild(option);
+        });
+      }
+    });
+  </script>  
 </body>
 </html>

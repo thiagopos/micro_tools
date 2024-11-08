@@ -76,33 +76,59 @@ router.post("/setores/excluir/:id", async (req, res) => {
   res.redirect("/protocolos/setores");
 });
 
+// Rota para buscar setores filhos com base em um setor pai
+router.get('/setores/filhos/:setorPaiId', async (req, res) => {
+  const { setorPaiId } = req.params;
+
+  try {
+    const setoresFilhos = await req.db.all(
+      'SELECT * FROM setores WHERE setor_pai_id = ?',
+      [setorPaiId]
+    );
+    res.json(setoresFilhos);
+  } catch (err) {
+    console.error('Erro ao buscar setores filhos:', err);
+    res.status(500).json({ error: 'Erro ao buscar setores filhos' });
+  }
+});
+
+
 /* ROTAS PARA PROTOCOLOS */
 
 // Rota para visualizar a página de criação de protocolo
-router.get("/criar", async (req, res) => {
-  const setores = await req.db.all("SELECT * FROM setores");
-  res.render("protocolos/criar-protocolo", { setores, moment });
+router.get('/criar', async (req, res) => {
+  try {
+    // Seleciona apenas setores que podem ser pais
+    const setores = await req.db.all(
+      'SELECT * FROM setores WHERE setor_pai_id IS NULL'
+    );
+    res.render('protocolos/criar-protocolo', { setores });
+  } catch (err) {
+    console.error('Erro ao buscar setores:', err);
+    res.status(500).send('Erro ao carregar a página de criação de protocolo');
+  }
 });
 
 // Rota para criar um protocolo (POST) com upload de arquivo
-router.post("/criar", upload.single('arquivo'), async (req, res) => {
-  const { nome_exibicao, codigo_identificacao, setor_responsavel_id } = req.body;
-  const arquivo = req.file;
+router.post('/criar', upload.single('arquivo'), async (req, res) => {
+  const { nome_exibicao, codigo_identificacao, setor_pai_id, setor_responsavel_id } = req.body;
   
-  // Verifica se o arquivo foi enviado e gera o nome salvo
-  const novoNomeArquivo = arquivo ? arquivo.filename : null;
-
+  // `req.file` terá o arquivo enviado, e `req.body` terá os outros campos do formulário
+  const nome_salvo = req.file ? req.file.filename : null;
+  
   try {
     await req.db.run(
-      "INSERT INTO protocolos (nome_exibicao, codigo_identificacao, arquivo, setor_responsavel_id, nome_salvo) VALUES (?, ?, ?, ?, ?)",
-      [nome_exibicao, codigo_identificacao, novoNomeArquivo, setor_responsavel_id, novoNomeArquivo]
+      'INSERT INTO protocolos (nome_exibicao, codigo_identificacao, arquivo, setor_responsavel_id, nome_salvo, created_at) VALUES (?, ?, ?, ?, ?, datetime("now"))',
+      [nome_exibicao, codigo_identificacao, nome_salvo, setor_responsavel_id || setor_pai_id, nome_salvo]
     );
-    res.redirect("/protocolos");
-  } catch (error) {
-    console.error("Erro ao salvar o protocolo:", error);
-    res.status(500).send("Erro ao salvar protocolo.");
+    res.redirect('/protocolos');
+  } catch (err) {
+    console.error('Erro ao criar protocolo:', err);
+    res.status(500).send('Erro ao criar protocolo');
   }
 });
+
+
 
 // Rota para listar todos os protocolos
 router.get("/", async (req, res) => {
